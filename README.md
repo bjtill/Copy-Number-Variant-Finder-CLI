@@ -1,7 +1,7 @@
 # Copy-Number-Variant-Finder-CLI
 A command line interface version of the Copy-Number-Variant-Finder tool
 
-GUI version is available at:  
+GUI version is available at: https://github.com/bjtill/Copy-Number-Variant-Finder-GUI
 _________________________________________________________________________________________________________________________________________________
 
 Use at your own risk.
@@ -14,17 +14,19 @@ This program identifies putative copy number variants from BAM files and plots t
 
 PREREQUISITES:
 
-    1. A set of BAM files that have had PCR duplicates removed. 
-    2. The following tools installed: samtools, zenity, awk, tr, datamash, R, and the R package ggplot. This program was built to run on Ubuntu 20.04 and higher and has been tested on macOS Mojave. See installation notes about running on other systems. 
+1. A set of BAM files that have had PCR duplicates removed. 
+2. The following tools installed: samtools, zenity, awk, tr, datamash, R, and the R package ggplot. This program was built to run on Ubuntu 20.04 and higher and has been tested on macOS Mojave. See installation notes about running on other systems. 
     
 INSTALLATION:
 
-Note: A GUI version of this tool exists. You may want to try it first. <URL>
+Note: A GUI version of this tool exists. You may want to try it first. https://github.com/bjtill/Copy-Number-Variant-Finder-GUI
 
 Linux/Ubuntu:
+
 Most tools that this program requires can be installed in the Linux command line by typing the name of the tool. Either version information (if already installed) or installation instructions (if not installed) will appear in the terminal. Follow the installation instructions to install the tool. To install ggplot2 first launch R by typing R in a terminal window. Next, type install.packages("ggplot2") to install the package. Next, downlaod the .sh file from this page and provide it permission to execute using chmod +x .
 
-macOS:  Install homebrew from the terminal window. Next, install other tools using brew install from the terminal (for example brew install samtools). The tools are: samtools, datamash, and R.  If running an older version of macOS (e.g. Mojave), you may need to install R by visiting cran.r-project.org to select and install the correct version.  Once installed, open a terminal window and launch R by typing R.  Install ggplot2 by typing install.packages("ggplot2") from the R terminal. 
+macOS:  
+Install homebrew from the terminal window. Next, install other tools using brew install from the terminal (for example brew install samtools). The tools are: samtools, datamash, and R.  If running an older version of macOS (e.g. Mojave), you may need to install R by visiting cran.r-project.org to select and install the correct version.  Once installed, open a terminal window and launch R by typing R.  Install ggplot2 by typing install.packages("ggplot2") from the R terminal. 
 
 Windows: 
 NOT TESTED. In theory you can install Linux bash shell on Windows (https://itsfoss.com/install-bash-on-windows/) and install the dependencies from the command line. If you try this and it works, please let me know. I don't have a Windows machine for testing.
