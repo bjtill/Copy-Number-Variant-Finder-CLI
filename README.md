@@ -26,9 +26,11 @@ Linux/Ubuntu:
 Most tools that this program requires can be installed in the Linux command line by typing the name of the tool. Either version information (if already installed) or installation instructions (if not installed) will appear in the terminal. Follow the installation instructions to install the tool. To install ggplot2 first launch R by typing R in a terminal window. Next, type install.packages("ggplot2") to install the package. Next, downlaod the .sh file from this page and provide it permission to execute using chmod +x .
 
 macOS:  
+
 Install homebrew from the terminal window. Next, install other tools using brew install from the terminal (for example brew install samtools). The tools are: samtools, datamash, and R.  If running an older version of macOS (e.g. Mojave), you may need to install R by visiting cran.r-project.org to select and install the correct version.  Once installed, open a terminal window and launch R by typing R.  Install ggplot2 by typing install.packages("ggplot2") from the R terminal. 
 
 Windows: 
+
 NOT TESTED. In theory you can install Linux bash shell on Windows (https://itsfoss.com/install-bash-on-windows/) and install the dependencies from the command line. If you try this and it works, please let me know. I don't have a Windows machine for testing.
 
 EXAMPLE DATA:
