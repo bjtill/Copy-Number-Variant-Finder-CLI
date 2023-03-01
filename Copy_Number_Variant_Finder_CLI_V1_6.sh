@@ -1,34 +1,28 @@
 #!/bin/bash
 #BT February 24, 2023
 #Command line version
+#Version 1.6 modifies plot axis label and changes plot colors.
 
 ##################################################################################################################################
 
 # Help
 [ "$1" = "-h" -o "$1" = "--help" ] && echo "
-Copy Number Variation Finder (CNVF) command line version 1.5
+Copy Number Variation Finder (CNVF) command line version 1.6
 ABOUT: 
 This program aids in the identification of copy number variants between control and test samples by parsing coverage data from a BAM (or SAM) alignment file and plotting the results.  
-
 PREREQUISITES:
 1) BAM files that are position sorted and have PCR duplicates removed, 2) An index of each BAM file, 3)the following tools installed: samtools, bash, datamash, awk, sed, zenity, R, and the R package ggplot2. This program was built to run on Ubuntu 20.04 and higher. See the readme file for information on using with other opperating systems.  
-
 TO RUN:
 1) Provide permission for this program to run on your computer (open a terminal window and type chmod +x Copy_Number_Variant_Hunter_CLI_V1_5.sh).  Check to make sure that the name is an exact match to the .sh file you are using as the version may change.
-
 2) Test to see if this works by launching the program without any arguments (./CNV_Finder_CLI_V1_3.sh). You should should see some information on what you need to do to run the program.  
-
 3) Run the program with the arguments.  Prior to doing this, you should collect the information needed.  It may be helpful to create a text file that contains all the information you need. If this seems like a lot of work, try running the GUI version, where you don't need to do any of this.  The following information is needed: 
-
 	a: A file that lists the paths of all the bam files. It should be a plain text file and look like:
 	
 /home/brad/Documents/43803_rg_dedup.bam
 /home/brad/Documents/43802_rg_dedup.bam
 /home/brad/Documents/43801_rg_dedup.bam
 /home/brad/Documents/43804_rg_dedup.bam 
-
 	It is easiest to put all the bam files in the same directory.  Next, open a terminal window and drag a bam file into the window.  The path should appear.  Copy this into the text file and repeat for all bams.  The text file containing BAM names and paths should be in the same directory as this program.  
-
 	b: The ploidy of the samples being evaluated. 
 	
 	c: The bin size for your analysis.  This is a number that defines the non-overlapping window used to calculate the average coverage for that region.  It should not contain any symblols.  For example: 100000
@@ -40,19 +34,15 @@ TO RUN:
 	
 LICENSE:  
 MIT License 
-
 Copyright (c) 2023 Bradley John Till
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the *Software*), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -60,7 +50,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-Version Information:  Version 1.5, February 24, 2023
+Version Information:  Version 1.6, February 28, 2023
 " && exit
 
 ############################################################################################################################
@@ -224,7 +214,7 @@ tr ' ' ',' < $i > ${i%.*}.nf5
 tr '\t' ',' < ${i%.*}.nf5 > ${i%.*}.nf6
 done
 
-printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=Sample, fill=factor(CovGp))) + geom_tile() + scale_fill_manual(values =c("0"="firebrick1","1"="firebrick", "2"="dodgerblue4", "3"="darkolivegreen", "4"="darkblue", "5"="darkorange2", "6"="darkorange"), name = "Coverage Groups") + theme(axis.text.x = element_text(angle = 90, size =8, vjust = 0.5, hjust=1), axis.text.y = element_text(size = 8)) + xlab("Position")\np2 <- p + labs(title= sub("\\\.nf6$","",i)) \nggsave(plot = p2, filename= paste0(i, "AFbins.jpeg")) \n#p3 <- ggplotly(p2) \n#htmlwidgets::saveWidget(p3, file = paste0(i, ".html")) \n}' > AFbin.R
+printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=Sample, fill=factor(CovGp))) + geom_tile() + scale_fill_manual(values =c("0"="#273046","1"="#046C9A", "2"="#3B9AB2", "3"="darkgreen", "4"="#EBCC2A", "5"="#E58601", "6"="#B40F20"), name = "Coverage Groups") + theme(axis.text.x = element_text(angle = 90, size =8, vjust = 0.5, hjust=1), axis.text.y = element_text(size = 8)) + xlab("Position")\np2 <- p + labs(title= sub("\\\.nf6$","",i)) \nggsave(plot = p2, filename= paste0(i, "AFbinsc3.tiff")) \n#p3 <- ggplotly(p2) \n#htmlwidgets::saveWidget(p3, file = paste0(i, ".html")) \n}' > AFbin.R
 
 Rscript AFbin.R
 for i in *nf6AFbins*; do mv $i ${i%.nf6*}_ControlCompare_Coverage.jpeg; done
@@ -232,7 +222,7 @@ mkdir CovPlot
 cp *.nf6 ./CovPlot
 cd CovPlot 
 
-printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=CovBMean, color=Sample)) + geom_point(size=1, alpha = 0.5) + theme(axis.text.x = element_text(angle = 90, size =8), axis.text.y = element_text(size = 8)) + labs(title="_Coverage_Variation") + ylab("Coverage Compared to Mean of All Samples") \np2 <- p + labs(title= sub("\\\.nf6$","",i))\nggsave(plot = p2, filename= paste0(i, "Covbins.jpeg"), width=10, height=5, units=c("in"))  \n}' > BFbin.R
+printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=CovBMean, color=Sample)) + geom_point(size=1, alpha = 0.5) + theme(axis.text.x = element_text(angle = 90, size =8), axis.text.y = element_text(size = 8)) + labs(title="_Coverage_Variation") + ylab("Coverage Compared to Control") \np2 <- p + labs(title= sub("\\\.nf6$","",i))\nggsave(plot = p2, filename= paste0(i, "Covbins.jpeg"), width=10, height=5, units=c("in"))  \n}' > BFbin.R
 
 Rscript BFbin.R
 for i in *nf6Covbins*; do mv $i ${i%.nf6*}_ControlCompare_CoverageGroups.jpeg; done
@@ -300,7 +290,7 @@ tr ' ' ',' < $i > ${i%.*}.nf5
 tr '\t' ',' < ${i%.*}.nf5 > ${i%.*}.nf6
 done
  
-printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=Sample, fill=factor(CovGp))) + geom_tile() + scale_fill_manual(values =c("0"="firebrick1","1"="firebrick", "2"="dodgerblue4", "3"="darkolivegreen", "4"="darkblue", "5"="darkorange2", "6"="darkorange"), name = "Coverage Groups") + theme(axis.text.x = element_text(angle = 90, size =8, vjust = 0.5, hjust=1), axis.text.y = element_text(size = 8)) + xlab("Position")\np2 <- p + labs(title= sub("\\\.nf6$","",i)) \nggsave(plot = p2, filename= paste0(i, "AFbins.jpeg")) \n#p3 <- ggplotly(p2) \n#htmlwidgets::saveWidget(p3, file = paste0(i, ".html")) \n}' > AFbin.R
+printf 'library(ggplot2) \nfile_list=list.files(full.names=F, pattern="\\\.nf6") \nfilenames <- gsub("\\\.nf6$","", list.files(pattern="\\\_tmp$")) \nfor (i in file_list){ \ng<-read.csv(i) \np <- ggplot(g, aes(x=Position, y=Sample, fill=factor(CovGp))) + geom_tile() + scale_fill_manual(values =c("0"="#273046","1"="#046C9A", "2"="#3B9AB2", "3"="darkgreen", "4"="#EBCC2A", "5"="#E58601", "6"="#B40F20"), name = "Coverage Groups") + theme(axis.text.x = element_text(angle = 90, size =8, vjust = 0.5, hjust=1), axis.text.y = element_text(size = 8)) + xlab("Position")\np2 <- p + labs(title= sub("\\\.nf6$","",i)) \nggsave(plot = p2, filename= paste0(i, "AFbinsc3.tiff")) \n#p3 <- ggplotly(p2) \n#htmlwidgets::saveWidget(p3, file = paste0(i, ".html")) \n}' > AFbin.R
 
 Rscript AFbin.R
 #rename plots 
