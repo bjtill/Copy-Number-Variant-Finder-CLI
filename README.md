@@ -8,6 +8,10 @@ Use at your own risk.
 
 I cannot provide support. All information obtained/inferred with this script is without any implied warranty of fitness for any purpose or use whatsoever.
 
+PLEASE USE THE FOLLOWING CITATION: 
+
+Till BJ. Identification of Induced Copy Number Variation from Low Coverage Sequence Data. Methods Mol Biol. 2024;2787:141-152. doi: 10.1007/978-1-0716-3778-4_9. 
+
 ABOUT: 
 
 This program identifies putative copy number variants from BAM files and plots the results in both scatter and tile format to facilitate the identification of rare events such as those induced when treating cells with ionizing radiation. User selected parameters include sample ploidy, the bin size (the number of consecutive non-overlapping base pairs from which to derive mean coverage for a region), choice of chromosomes/contigs to evaluate, and the choice of a control sample to compare data to. 
